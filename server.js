@@ -1,21 +1,28 @@
 const http = require('http');
 const fs = require('fs')
 
-// let HTML = fs.readFileSync(`${__dirname}/index.html`)
 const names = ["francis","james","Rob"]
 const cars = {
     name:"Ford",
     model:"Fiesta"
 }
 
-
 const server = http.createServer((req,res)=>{
-    res.writeHead(200,{'Content-Type':'application/json'});
-    const json = JSON.stringify({
-        names,
-        cars
-    })
-    res.end(json)
+    if(req.url === '/'){
+        res.writeHead(200,{'Content-Type':'text/html'});
+        let HTML = fs.readFileSync(`${__dirname}/index.html`)
+        res.end(HTML);
+    } else if(req.url === '/api/user') {
+        res.writeHead(200,{'Content-Type':'application/json'});
+        const json = JSON.stringify({
+            names,
+            cars
+        })
+        res.end(json);
+    } else {
+        res.writeHead(404);
+        res.end()
+    }
 })
 
 
