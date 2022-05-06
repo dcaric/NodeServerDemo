@@ -1,4 +1,6 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 const app = express();
 
 app.use('/css',express.static(__dirname+'/public/css'));
@@ -21,6 +23,38 @@ app.get('/',(req,res)=>{
         </html>
     `)
 });
+
+
+const jsonParser = bodyParser.json()
+const urlencodedParser = bodyParser.urlencoded({extended:false})
+
+
+app.get('/user',(req,res)=>{
+    let HTML = fs.readFileSync(`${__dirname}/views/user.html`);
+    res.send(`${HTML}`)
+})
+
+app.post('/api/adduser',jsonParser,(req,res)=>{
+    console.log(req.body);
+    res.sendStatus(200);
+})
+
+
+app.get('/querystring',(req,res)=>{
+    let HTML = fs.readFileSync(`${__dirname}/views/querystring.html`);
+    res.send(`${HTML}`)
+})
+
+app.post('/api/queryadd',urlencodedParser,(req,res)=>{
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    console.log(firstname + ' ' + lastname)
+
+    res.sendStatus(200);
+})
+
+
+
 
 app.get('/api/:user/:id',(req,res)=>{
     let id = req.params.id;
@@ -46,5 +80,5 @@ app.get('/api/car',(req,res)=>{
 })
 
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 app.listen(PORT)
