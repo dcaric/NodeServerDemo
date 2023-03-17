@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
 
+// middlewares
 app.use('/css',express.static(__dirname+'/public/css'));
 app.use('/',(req,res,next)=>{
     console.log('someone made a request for:'+ req.url)
